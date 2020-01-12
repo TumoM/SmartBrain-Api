@@ -27,6 +27,14 @@ const database = {
             password: 'pass2',
             entries: 0,
             joined: new Date()
+        },
+        {
+            id: '125',
+            name: 'test',
+            email: 'test@mail',
+            password: 'pas',
+            entries: 0,
+            joined: new Date()
         }
     ]
 }
@@ -41,12 +49,11 @@ app.post("/signin", function (req, res) {
         email,
         password
     } = req.body;
-    console.log("In signin for: ",email);
     
     for (user of database.users) {
         if (email === user.email &&
-            password === user.password) {
-            return res.status(200).json("winning");
+            password === user.password) {                
+            return res.json(user);
         }
     }
     res.status(400).json("Error signing in")
