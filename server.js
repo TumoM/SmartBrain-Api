@@ -1,8 +1,17 @@
 const express = require('express')
 const bcrypt = require('bcrypt-nodejs');
 var cors = require("cors");
+const knex = require('knex')({
+    client: 'pg',
+    connection: {
+      host : '127.0.0.1',
+      user : 'tumom',
+      password : 'toor',
+      database : 'smart-brain'
+    }
+  });
 
-const app = express();
+ app = express();
 app.use(express.urlencoded({
     extended: false
 }));
@@ -11,33 +20,6 @@ app.use(cors());
 
 const port = process.env.PORT || 4000
 
-const database = {
-    users: [{
-            id: '123',
-            name: 'John',
-            email: 'Johnmail@gmail.com',
-            password: 'pass1',
-            entries: 0,
-            joined: new Date()
-        },
-        {
-            id: '124',
-            name: 'Sally',
-            email: 'Sallymail@gmail.com',
-            password: 'pass2',
-            entries: 0,
-            joined: new Date()
-        },
-        {
-            id: '125',
-            name: 'test',
-            email: 'test@mail',
-            password: 'pas',
-            entries: 0,
-            joined: new Date()
-        }
-    ]
-}
 
 app.get("/", function (req, res) {
     console.log("In root route");
@@ -49,71 +31,91 @@ app.post("/signin", function (req, res) {
         email,
         password
     } = req.body;
-    
-    for (user of database.users) {
-        if (email === user.email &&
-            password === user.password) {                
-            return res.json(user);
-        }
-    }
-    res.status(400).json("Error signing in")
+    knex.select('email','hash').where('email','=', email).from('login')
+        .then(data => {
+            const hash = data[0].hash;
+            const isValid = bcrypt.compareSync(password, hash)
+            if (isValid){
+                return knex.select().from('users')
+                    .where('email','=', email)
+                    .then(user => {
+                        res.json(user[0])
+                    })
+                    .catch(err => res.status(400).json('unable to get user'))
+            }
+            else{
+                res.status(401).json('You shall not pass!!')
+            }
+        })
+        .catch(err => res.status(400).json('wrong credentials'));
 })
 
 app.post("/register", function (req, res) {
-    const {
-        email,
-        name,
-        password
-    } = req.body;
-    database.users.push({
-        id:'125',
-        name,
-        email,
-        entries: 0,
-        joined: new Date()
-    });
-    res.json(database.users[database.users.length-1])
+    const {email,name,password} = req.body;
+    const hash =  bcrypt.hashSync(password)
+    knex.transaction(trx =>{
+        trx.insert({
+            hash,
+            email
+        }).into('login')
+        .returning('email')
+        .then(loginEmail => {
+            return trx('users')
+            .returning('*')
+            .insert({
+                email: loginEmail[0],
+                name,
+                joined: new Date()
+            }).then((user) =>{
+                res.json(user[0])
+            })
+        })
+        .then(trx.commit)
+        .catch(trx.rollback)
+    })
+        .catch((err) =>{
+                console.error('Bro',err);
+                res.status(400).json(`Failed to register :( `);
+            }) 
+    
 
 })
 
 app.get("/profile/:id", function (req, res) {
     const id = req.params.id;
-    for (user of database.users) {
-        if (user.id === id) {
-            found = true;
-            return res.json(user)
+    knex.select().where({id}).from('users')
+    .then((user) =>{
+        if (!user.length > 0) {
+            res.status(404).json("Not Found")
+
         }
-    }
-    res.status(404).json("no such user found")
+        else{
+        return res.json(user);
+        }
+    }).catch((err) =>{
+        res.status(404).json("Error getting user")
+        
+    })
 
 })
 
 app.put('/image', (req, res) => {
     const id = req.body.id
-    let found = false;
-    for (user of database.users) {
-        if (user.id === id) {
-            found = true;
-            user.entries++;
-            return res.json(user.entries);
-        }
-    }
-    if (!found) {
-    res.status(404).json("no such user found")
+    knex('users')
+    .where('id', '=', id)
+    .increment('entries',1)
+    .returning('entries')
+    .then((entires) =>{
+        res.json(entires)
+    })
+    .catch((err) =>{
+        console.error('Err',err);
         
-    }
+        res.status(400).json('unable to get entries.')
+    })
 
 })
 
-
-// // Load hash from your password DB.
-// bcrypt.compare("bacon", hash, function(err, res) {
-//     // res == true
-// });
-
-// bcrypt.compare("veggies", hash, function(err, res) {
-//     // res = false
-// });
 
 app.listen(port, () => {
     console.log(`Server running on: `, port);
