@@ -15,8 +15,8 @@ const database = {
     users: [{
             id: '123',
             name: 'John',
-            email: 'Johnmail@gmail.com',
-            password: 'pass1',
+            email: 'john@mail',
+            password: '1',
             entries: 0,
             joined: new Date()
         },
@@ -72,7 +72,6 @@ app.post("/register", function (req, res) {
         entries: 0,
         joined: new Date()
     });
-    console.log("DB:",database);
     res.json(database.users[database.users.length-1])
 
 })
@@ -91,6 +90,7 @@ app.get("/profile/:id", function (req, res) {
 
 app.put('/image', (req, res) => {
     const id = req.body.id
+    let found = false;
     for (user of database.users) {
         if (user.id === id) {
             found = true;
@@ -98,7 +98,10 @@ app.put('/image', (req, res) => {
             return res.json(user.entries);
         }
     }
+    if (!found) {
     res.status(404).json("no such user found")
+        
+    }
 
 })
 
