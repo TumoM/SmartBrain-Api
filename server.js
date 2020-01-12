@@ -15,8 +15,8 @@ const database = {
     users: [{
             id: '123',
             name: 'John',
-            email: 'john@mail',
-            password: '1',
+            email: 'Johnmail@gmail.com',
+            password: 'pass1',
             entries: 0,
             joined: new Date()
         },
@@ -105,6 +105,15 @@ app.put('/image', (req, res) => {
 
 })
 
+
+// // Load hash from your password DB.
+// bcrypt.compare("bacon", hash, function(err, res) {
+//     // res == true
+// });
+
+// bcrypt.compare("veggies", hash, function(err, res) {
+//     // res = false
+// });
 
 app.listen(port, () => {
     console.log(`Server running on: `, port);
