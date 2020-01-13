@@ -25,7 +25,7 @@ app.use(cors());
 const PORT = process.env.PORT || 4000
 
 
-app.get("/", (req, res) => { res.send("<h1>We are working!!!</h1>"})
+app.get("/", (req, res) => { res.send("<h1>We are working!!!</h1>"/*root.handleRoot(req,res,knex)*/)})
 
 app.post("/signin", (req,res) =>{ signin.handleSignin(req,res,knex,bcrypt)})
 
