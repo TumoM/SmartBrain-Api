@@ -22,10 +22,10 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(cors());
 
-const port = process.env.PORT || 4000
+const PORT = process.env.PORT || 4000
 
 
-app.get("/", (req, res) => { root.handleRoot(req,res,knex)})
+app.get("/", (req, res) => { res.send("<h1>We are working!!!</h1>"/*root.handleRoot(req,res,knex)*/})
 
 app.post("/signin", (req,res) =>{ signin.handleSignin(req,res,knex,bcrypt)})
 
@@ -37,7 +37,7 @@ app.put('/image', (req, res) => { image.handleImage(req,res,knex)})
 
 app.post('/imageurl', (req, res) => { image.handleApiCall(req,res)})
 
-app.listen(port, () => {
-    console.log(`Server running on: `, port);
+app.listen(PORT, () => {
+    console.log(`Server running on: `, PORT);
 
 })
