@@ -4,7 +4,8 @@
   "description": "Backend server for the SmartBrain web app.",
   "main": "script.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "deploy": "git pull && git push && git push heroku master"
   },
   "author": "Tumo M.",
   "license": "ISC",
