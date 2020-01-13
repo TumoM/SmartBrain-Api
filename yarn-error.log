@@ -1,0 +1,58 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\tumom\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js deploy
+
+PATH: 
+  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\tumom\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python27;C:\Python27\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NGX;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\Program Files\Microsoft VS Code\bin;C:\Users\tumom\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Deluge;C:\Users\tumom\AppData\Roaming\npm;C:\Users\tumom\AppData\Local\GitHubDesktop\bin;C:\Program Files\MongoDB\Server\4.2\bin;C:\Program Files\heroku\bin;C:\Users\tumom\.sourcerer;C:\Program Files\PostgreSQL\12\bin
+
+Yarn version: 
+  1.19.2
+
+Node version: 
+  12.13.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\tumom\Documents\OneDrive - University of Cape Town\Zero to Mastery Web\SmartBrain-API\package.json: Unexpected token < in JSON at position 184
+      at JSON.parse (<anonymous>)
+      at C:\Users\tumom\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\tumom\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:304:30)
+      at C:\Users\tumom\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:315:13
+
+npm manifest: 
+  {
+    "name": "smartbrain-api",
+    "version": "1.0.0",
+    "description": "Backend server for the SmartBrain web app.",
+    "main": "script.js",
+    "scripts": {
+      "start": "node server.js",
+  <<<<<<< HEAD
+      "deploy": "git pull && git push && git push heroku master"
+  =======
+      "deploy": "git pull && git push %% git push heroku master"
+  >>>>>>> d2d198dcb4075531cf3306123137c97466c3b9f7
+    },
+    "author": "Tumo M.",
+    "license": "ISC",
+    "dependencies": {
+      "bcrypt-nodejs": "0.0.3",
+      "clarifai": "^2.9.1",
+      "cors": "^2.8.5",
+      "express": "^4.17.1",
+      "knex": "^0.20.7",
+      "nodemon": "^2.0.2",
+      "pg": "^7.17.1"
+    },
+    "devDependencies": {
+      "nodemon": "^2.0.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
