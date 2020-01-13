@@ -35,6 +35,7 @@ app.get("/profile/:id", (req, res) => { profile.handleProfile(req,res,knex)})
 
 app.put('/image', (req, res) => { image.handleImage(req,res,knex)})
 
+app.post('/imageurl', (req, res) => { image.handleApiCall(req,res)})
 
 app.listen(port, () => {
     console.log(`Server running on: `, port);
