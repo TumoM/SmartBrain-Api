@@ -11,6 +11,8 @@ const knex = require('knex')({
     }
   });
 
+const register = require('./controllers/register')
+
  app = express();
 app.use(express.urlencoded({
     extended: false
@@ -59,7 +61,7 @@ app.post("/register", function (req, res) {
             email
         }).into('login')
         .returning('email')
-        .then(loginEmail => {
+        .then((loginEmail) => {
             return trx('users')
             .returning('*')
             .insert({
@@ -67,6 +69,8 @@ app.post("/register", function (req, res) {
                 name,
                 joined: new Date()
             }).then((user) =>{
+                console.log('New user created:',user[0]);
+                
                 res.json(user[0])
             })
         })
