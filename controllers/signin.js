@@ -6,7 +6,7 @@ const handleSignin = (req, res, knex, bcrypt) =>{
     if (!email|| !password) {
         return res.status(400).json("incorrect form submission")
     }
-    knex.select('email','hash').where('email','=', email).from('login')
+    knex.select('email','hash').where(  ).from('login')
         .then(data => {
             const hash = data[0].hash;
             const isValid = bcrypt.compareSync(password, hash)

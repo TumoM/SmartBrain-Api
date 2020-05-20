@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Backend server for the SmartBrain web app.",
   "main": "script.js",
+  "engines":{
+    "node": "13.x"
+  },
   "scripts": {
     "start": "node server.js",
     "deploy": "git pull && git push && git push heroku master"
